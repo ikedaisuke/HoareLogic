@@ -50,22 +50,20 @@ restPre X R a b = X a × R a b
 restPost : ∀ {l} -> Pred S -> Rel S l -> Rel S l
 restPost X R a b = R a b × X b
 
-deltaRestPre : {X : Pred S} -> {R : Rel S Level.zero} -> {a b : S} -> 
+deltaRestPre : (X : Pred S) -> (R : Rel S Level.zero) -> (a b : S) -> 
                Iff (restPre X R a b) (comp (delta X) R a b)
-deltaRestPre {X} {R} {a} {b} 
+deltaRestPre X R a b 
   = (λ (h : restPre X R a b) → a , (proj₁ h , ref) , proj₂ h) , 
      λ (h : comp (delta X) R a b) → proj₁ (proj₁ (proj₂ h)) , 
-       substId2 {Level.zero} {S} {a} {b} 
+       substId2 
          (proj₂ (proj₁ (proj₂ h))) 
          (λ z → R z b) (proj₂ (proj₂ h))
 
-deltaRestPost : {X : Pred S} -> {R : Rel S Level.zero} -> {a b : S} -> 
+deltaRestPost : (X : Pred S) -> (R : Rel S Level.zero) -> (a b : S) -> 
                 Iff (restPost X R a b) (comp R (delta X) a b)
-deltaRestPost {X} {R} {a} {b}
+deltaRestPost X R a b
   = (λ (h : restPost X R a b) → b , proj₁ h , proj₂ h , ref) , 
      λ (h : comp R (delta X) a b) → 
-       substId1 {Level.zero} {S} {proj₁ h} {b} 
-                (proj₂ (proj₂ (proj₂ h))) (R a) (proj₁ (proj₂ h)) , 
-       substId1 {Level.zero} {S} {proj₁ h} {b} 
-                 (proj₂ (proj₂ (proj₂ h))) X (proj₁ (proj₂ (proj₂ h)))
+       substId1 (proj₂ (proj₂ (proj₂ h))) (R a) (proj₁ (proj₂ h)) , 
+       substId1 (proj₂ (proj₂ (proj₂ h))) X (proj₁ (proj₂ (proj₂ h)))
 
