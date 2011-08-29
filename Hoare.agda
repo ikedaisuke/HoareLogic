@@ -88,7 +88,7 @@ data HTProof : Cond -> Comm -> Cond -> Set where
   SkipRule : (b : Cond) -> HTProof b Skip b
   AbortRule : (bPre : Cond) -> (bPost : Cond) -> 
               HTProof bPre Abort bPost
-  WeakingRule : {bPre : Cond} -> {bPre' : Cond} -> {cm : Comm} -> 
+  WeakeningRule : {bPre : Cond} -> {bPre' : Cond} -> {cm : Comm} -> 
                 {bPost' : Cond} -> {bPost : Cond} ->
                 Tautology bPre bPre' ->
                 HTProof bPre' cm bPost' ->
@@ -143,7 +143,7 @@ Soundness (PrimRule {bPre} {cm} {bPost} pr) s1 s2 q1 q2
 Soundness {.bPost} {.Skip} {bPost} (SkipRule .bPost) s1 s2 q1 q2 
   = substId1 {Level.zero} {State} {s1} {s2} (proj₂ q2) (SemCond bPost) q1
 Soundness {bPre} {.Abort} {bPost} (AbortRule .bPre .bPost) s1 s2 q1 ()
-Soundness (WeakingRule {bPre} {bPre'} {cm} {bPost'} {bPost} tautPre pr tautPost) 
+Soundness (WeakeningRule {bPre} {bPre'} {cm} {bPost'} {bPost} tautPre pr tautPost) 
           s1 s2 q1 q2 
   = let hyp : Satisfies bPre' cm bPost'
         hyp = Soundness pr
